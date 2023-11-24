@@ -16,6 +16,8 @@ PROMPT = (
     "sentences. The sentences must carry the overview and the 'why' of the commit."
 )
 
+MODEL = "chatml-alfred-v2-sft-ep-2023-10-30-13-57-26"
+
 
 def complete(diff):
     r = requests.post(
@@ -33,7 +35,7 @@ def complete(diff):
                 "content": f"{diff}\n---\n{PROMPT}"
             }],
             "endpoint":
-            "chatml-alfred-v2-sft-ep-2023-10-30-13-57-26",
+            MODEL,
             "region":
             "us-west-2",
             "maxTokens":
@@ -67,8 +69,12 @@ def label(diff, good_msg, bad_msg):
         "git-commit",
         "bestContinuation":
         good_msg,
+        "bestModelId":
+        "human",
         "worstContinuation":
         bad_msg,
+        "worstModelId":
+        MODEL,
     }
 
     response = requests.post(URL, json=payload, headers=headers)
