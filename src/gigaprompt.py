@@ -13,7 +13,9 @@ SYSTEM = ("You are a git expert and developer with communication "
 PROMPT = (
     "Write a high quality commit message for the previous git diff output.\n"
     "A good commit message has a title, then a newline, and up to 3 short "
-    "sentences. The sentences must carry the overview and the 'why' of the commit."
+    "sentences. The sentences must carry the overview and the 'why' of the commit.\n"
+    "(You should focus on the differences introduced by the commit, which are new lines "
+    "starting with a +, and removed lines starting with a -)."
 )
 
 MODEL = "chatml-alfred-v2-sft-ep-2023-10-30-13-57-26"

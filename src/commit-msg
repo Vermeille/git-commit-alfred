@@ -25,8 +25,25 @@ if [ $? -eq 0 ]; then
     exit 0
 fi
 
+# Exit if there's no commit (probably due to git commit -m)
+if [ ! -f /tmp/git-diff.tmp -o ! -f /tmp/paradigm.bad ]; then
+    rm /tmp/paradigm.good
+    rm /tmp/paradigm.bad
+    rm /tmp/git-diff.tmp
+    exit 0
+fi
+
 #remove all comment lines
 cat $FILE | sed '/^#/ d' > /tmp/paradigm.good
+
+# if /tmp/paradigm.good is empty, exit
+if awk 'NF {exit 1}' /tmp/paradigm.good; then
+    rm /tmp/paradigm.good
+    rm /tmp/paradigm.bad
+    rm /tmp/git-diff.tmp
+    exit 0
+fi
+
 python3 $(dirname $0)/gigaprompt.py label \
     /tmp/git-diff.tmp \
     /tmp/paradigm.good \
